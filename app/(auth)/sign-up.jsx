@@ -18,21 +18,17 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
-    if (!form.username || !form.email || !form.password) {
+    if (!form.username === "" || !form.email === "" || !form.password === "") {
       Alert.alert("Error", "Please fill all fields");
       return;
     }
     setIsSubmitting(true);
     try {
       const result = await createUser(form.email, form.password, form.username);
-      if (result.error && result.error === "user_exists") {
-        Alert.alert(
-          "Error",
-          "User already exists with the same email or username."
-        );
-      } else {
-        router.replace("/home");
-      }
+      setUser(result);
+      setIsLogged(true);
+
+      router.replace("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
